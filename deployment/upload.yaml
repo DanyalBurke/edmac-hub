@@ -1,0 +1,6 @@
+---
+
+ - name: Upload site
+   hosts: all
+   tasks:
+     - shell: 'ncftpput -R -v -u "youmo3" -p $(cat ftp_password) youmouteki.com public_html/edmac-hub ../build/*'
