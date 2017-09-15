@@ -3,11 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "^20.0.8",
-    "@types/jquery": "^3.2.12",
-    "@types/node": "^8.0.25",
-    "@types/react": "^16.0.5",
-    "@types/react-dom": "^15.5.4",
     "bootstrap": "^3.3.7",
     "fabric": "^2.0.0-beta.6",
     "jquery": "^3.2.12",
@@ -17,9 +12,10 @@
     "react-scripts-ts": "2.6.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
+
 }

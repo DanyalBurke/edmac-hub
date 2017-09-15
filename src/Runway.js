@@ -5,11 +5,11 @@ import * as jQuery from 'jquery';
 import { fabric } from 'fabric';
 import { isUndefined } from 'util';
 
-function toRadians (angle: number) {
+function toRadians (angle) {
     return angle * (Math.PI / 180);
 }
 
-function parseOrThrow(value: string | undefined) {
+function parseOrThrow(value) {
     if (isUndefined(value)) {
         throw Error('API returned invalid response');
     } else {
@@ -21,8 +21,7 @@ class Runway extends React.Component {
     render() {
         return (
             <div>
-                <h2>Wind on the Runway</h2>
-                <canvas id="runway" width="346" height="300" />
+                <canvas className="runway" id="runway" width="346" height="300" />
                 <p id="weather">Weather information is loading. Provided by openweatherapi.com</p>
             </div>
         );
@@ -33,7 +32,7 @@ class Runway extends React.Component {
         // TODO : Switch to https://api.darksky.net/forecast/ee9674fddecc28aa06243b405920c521/51.307862,-0.252657?exclude=minutely,hourly,daily,alerts,flags&units=uk2
         var url = 'http://api.openweathermap.org/data/2.5/weather?id=7290639&appid=f244df20990dd7f488afbd527b4803ca&mode=xml&units=imperial';
 
-        jQuery.get(url).then(function(data: any) {
+        jQuery.get(url).then(function(data) {
             const wind  = jQuery(data).find('wind');
             const speed = parseOrThrow(wind.find('speed').attr('value'));
             const direction = parseOrThrow(wind.find('direction').attr('value'));
@@ -44,7 +43,7 @@ class Runway extends React.Component {
             jQuery('#weather').html(msg);
 
             const runwayAngle = 22.9;
-            const relativeDirection: number = direction - runwayAngle;
+            const relativeDirection = direction - runwayAngle;
             const scale = 1;
 
             const runwayCenterX = 170 * scale;
@@ -132,7 +131,7 @@ class Runway extends React.Component {
             });
 
 
-        }).fail(function(error: any) { console.log('Error ' + JSON.stringify(error)); });
+        }).fail(function(error) { console.log('Error ' + JSON.stringify(error)); });
     }
 }
 
