@@ -9,13 +9,14 @@
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
-    "react-scripts-ts": "2.6.0"
+    "react-scripts-ts": "2.6.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
-
+  },
+  "proxy": "http://localhost:80"
 }

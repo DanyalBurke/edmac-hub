@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Jumbotron, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import 'whatwg-fetch';
 
 class AddIntention extends React.Component {
 
@@ -24,14 +25,14 @@ class AddIntention extends React.Component {
                             componentClass="select" placeholder="12PM"
                             defaultValue="12 PM"
                         >
-                            <option value="12pm">12 PM</option>
-                            <option value="1pm">1 PM</option>
-                            <option value="2pm">2 PM</option>
-                            <option value="3pm">3 PM</option>
-                            <option value="4pm">4 PM</option>
-                            <option value="5pm">5 PM</option>
-                            <option value="6pm">6 PM</option>
-                            <option value="7pm">7 PM</option>
+                            <option value="12">12 PM</option>
+                            <option value="13">1 PM</option>
+                            <option value="14">2 PM</option>
+                            <option value="15">3 PM</option>
+                            <option value="16">4 PM</option>
+                            <option value="17">5 PM</option>
+                            <option value="18">6 PM</option>
+                            <option value="19">7 PM</option>
 
                         </FormControl>
                         <span className="input-group-btn">
@@ -47,7 +48,12 @@ class AddIntention extends React.Component {
 
     addIntention(event) {
         event.preventDefault();
-
+        fetch('/api/intentions.php5', {
+            method: 'post',
+            body: JSON.stringify({name: 'Greg', time: parseInt(event.target.value)})
+        }).catch((err) =>
+            console.log(err)
+        );
     }
 }
 

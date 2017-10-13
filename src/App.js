@@ -20,7 +20,7 @@ class App extends React.Component {
           <img src="logo.png" alt="logo" />
           <h2>{this.state.name.length > 0 ? this.state.name + ", " : ""} Welcome to EDMAC Hub</h2>
         </div>
-          {this.state.name.length == 0
+          {this.state.name.length === 0
               ?
                 <div className="container">
                     <div className="row">
