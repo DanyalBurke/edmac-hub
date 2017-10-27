@@ -7,8 +7,10 @@ class AddIntention extends React.Component {
     constructor(props) {
         super(props);
 
+        this.intentionsStore = props.intentionsStore;
+
         this.state = {
-            name: ''
+            visit_time: 12
         };
     }
 
@@ -23,7 +25,8 @@ class AddIntention extends React.Component {
                         <FormControl
                             autoFocus="true"
                             componentClass="select" placeholder="12PM"
-                            defaultValue="12 PM"
+                            value={this.state.visit_time}
+                            onChange={this.visitTimeChanged.bind(this)}
                         >
                             <option value="12">12 PM</option>
                             <option value="13">1 PM</option>
@@ -46,14 +49,14 @@ class AddIntention extends React.Component {
         );
     }
 
+    visitTimeChanged(event) {
+        this.setState({ visit_time: parseInt(event.target.value, 10)});
+    }
+
+
     addIntention(event) {
         event.preventDefault();
-        fetch('/api/intentions.php5', {
-            method: 'post',
-            body: JSON.stringify({name: 'Greg', time: parseInt(event.target.value)})
-        }).catch((err) =>
-            console.log(err)
-        );
+        this.intentionsStore.addIntention(this.props.name, this.state.visit_time);
     }
 }
 

@@ -4,8 +4,11 @@ import Runway from './Runway';
 import Login from './Login.js';
 import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
+import IntentionsStore from "./IntentionsStore";
 
 class App extends React.Component {
+    intentionsStore = new IntentionsStore();
+
     constructor(props) {
         super(props)
         this.state = {
@@ -37,8 +40,8 @@ class App extends React.Component {
                 </div>
               :
                 <div className="container">
-                    <AddIntention />
-                    <Intentions />
+                    <AddIntention name={this.state.name} intentionsStore={this.intentionsStore} />
+                    <Intentions name={this.state.name} intentionsStore={this.intentionsStore} />
                 </div>
           }
       </div>
