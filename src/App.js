@@ -1,10 +1,9 @@
 import * as React from 'react';
 import './App.css';
-import Runway from './Runway';
 import Login from './Login.js';
-import AddIntention from "./AddIntention";
-import Intentions from "./Intentions";
 import IntentionsStore from "./IntentionsStore";
+import MainApp from "./MainApp";
+import {PageHeader} from "react-bootstrap";
 
 class App extends React.Component {
     intentionsStore = new IntentionsStore();
@@ -16,37 +15,34 @@ class App extends React.Component {
         }
     }
 
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src="logo.png" alt="logo" />
-          <h2>{this.state.name.length > 0 ? this.state.name + ", " : ""} Welcome to EDMAC Hub</h2>
-        </div>
-          {this.state.name.length === 0
-              ?
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <Runway />
-                        </div>
-                        <div className="col-md-1"> </div>
-                        <div className="col-md-6">
-                                <Login refs="login" onLogin={this.onLogin.bind(this)}/>
-                        </div>
-                        <div className="col-md-1"> </div>
+    isLoggedIn() {
+        return this.state.name.length > 0;
+    }
 
+    render() {
+        let title = null, body = null;
+        if (this.isLoggedIn()) {
+            body = (
+                <MainApp name={this.state.name} intentionsStore={this.intentionsStore} />
+            );
+
+        } else {
+            body = (
+                <span>
+                    <div className="App-header">
+                        <img src="logo.png" alt="logo" />
                     </div>
-                </div>
-              :
-                <div className="container">
-                    <AddIntention name={this.state.name} intentionsStore={this.intentionsStore} />
-                    <Intentions name={this.state.name} intentionsStore={this.intentionsStore} />
-                </div>
-          }
-      </div>
-    );
-  }
+                    <div className="container App-header">
+                        <h2>Welcome to EDMAC Hub!</h2>
+                    </div>
+
+                    <Login refs="login" onLogin={this.onLogin.bind(this)}/>
+                </span>
+            );
+        }
+
+        return body;
+    }
 
   onLogin(name) {
       this.setState({name: name});
