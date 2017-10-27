@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Jumbotron, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import 'whatwg-fetch';
+import * as moment from "moment";
 
 class AddIntention extends React.Component {
 
@@ -16,7 +17,8 @@ class AddIntention extends React.Component {
 
     render() {
         return (
-        <Jumbotron>
+        <span>
+
             <p>Give an indication of when you intend to go to Epsom Downs today:</p>
             <form onSubmit={this.addIntention.bind(this)}>
                 <FormGroup controlId="time">
@@ -45,7 +47,7 @@ class AddIntention extends React.Component {
                 </FormGroup>
 
             </form>
-        </Jumbotron>
+        </span>
         );
     }
 

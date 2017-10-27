@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Runway from "./Runway";
-import {Button, Nav, Navbar, NavItem} from "react-bootstrap";
+import {Button, Jumbotron, Nav, Navbar, NavItem} from "react-bootstrap";
 import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
+import * as moment from "moment";
 
 class AppMenu extends React.Component {
     constructor(props) {
@@ -36,6 +37,7 @@ class AppMenu extends React.Component {
                         <Nav activeKey={this.state.selected} onSelect={this.handleSelect.bind(this)}>
                             <NavItem eventKey={'intentions'}> Who's going? </NavItem>
                             <NavItem eventKey={'weather'}> Weather </NavItem>
+                            <NavItem onClick={this.props.onLogout}>Logout</NavItem>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -49,11 +51,16 @@ class AppMenu extends React.Component {
                     <span>
                         {top}
                         <div className="container">
-                            <h2>Welcome {this.props.name} <Button bsStyle="link" onClick={this.props.onLogout}>(change)</Button></h2>
+
                             <div className="row">
                                 <div className="col-md-8">
-                                    <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
-                                    <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                    <Jumbotron>
+                                        <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                    </Jumbotron>
+                                    <Jumbotron>
+                                        <p>{moment().format('dddd Do MMMM  YYYY')}</p>
+                                        <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                    </Jumbotron>
                                 </div>
                             </div>
                         </div>
