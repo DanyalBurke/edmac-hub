@@ -3,14 +3,16 @@ import './App.css';
 import Login from './Login.js';
 import IntentionsStore from "./IntentionsStore";
 import MainApp from "./MainApp";
+import Cookie from 'js-cookie'
 
 class App extends React.Component {
     intentionsStore = new IntentionsStore();
 
     constructor(props) {
         super(props)
+
         this.state = {
-            name: ""
+            name: Cookie.get('name') ? Cookie.get('name') : ""
         }
     }
 
@@ -22,7 +24,7 @@ class App extends React.Component {
         let title = null, body = null;
         if (this.isLoggedIn()) {
             body = (
-                <MainApp name={this.state.name} intentionsStore={this.intentionsStore} />
+                <MainApp name={this.state.name} onLogout={this.onLogout.bind(this)} intentionsStore={this.intentionsStore} />
             );
 
         } else {
@@ -44,7 +46,13 @@ class App extends React.Component {
     }
 
   onLogin(name) {
+      Cookie.set('name', name, { expires: 365 });
       this.setState({name: name});
+  }
+
+  onLogout() {
+      Cookie.remove('name');
+      this.setState({name: ""});
   }
 }
 

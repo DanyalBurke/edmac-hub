@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Runway from "./Runway";
-import {Nav, Navbar, NavItem} from "react-bootstrap";
+import {Button, Nav, Navbar, NavItem} from "react-bootstrap";
 import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
 
@@ -19,6 +19,8 @@ class AppMenu extends React.Component {
         });
     }
 
+
+
     render() {
 
         let top = (
@@ -26,7 +28,7 @@ class AppMenu extends React.Component {
                 <Navbar stacked>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            EDMAC Hub
+                            <Button bsStyle="link" onClick={this.props.onLogout}>EDMAC Hub</Button>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
@@ -47,7 +49,7 @@ class AppMenu extends React.Component {
                     <span>
                         {top}
                         <div className="container">
-                            <h2>Welcome {this.props.name}</h2>
+                            <h2>Welcome {this.props.name} <Button bsStyle="link" onClick={this.props.onLogout}>(change)</Button></h2>
                             <div className="row">
                                 <div className="col-md-8">
                                     <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>

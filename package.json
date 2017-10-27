@@ -6,6 +6,7 @@
     "bootstrap": "^3.3.7",
     "fabric": "^2.0.0-beta.6",
     "jquery": "^3.2.12",
+    "js-cookie": "^2.1.4",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
