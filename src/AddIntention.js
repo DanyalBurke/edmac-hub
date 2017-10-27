@@ -11,7 +11,7 @@ class AddIntention extends React.Component {
         this.intentionsStore = props.intentionsStore;
 
         this.state = {
-            visit_time: 12
+            visitTime: 12
         };
     }
 
@@ -27,7 +27,7 @@ class AddIntention extends React.Component {
                         <FormControl
                             autoFocus="true"
                             componentClass="select" placeholder="12PM"
-                            value={this.state.visit_time}
+                            value={this.state.visitTime}
                             onChange={this.visitTimeChanged.bind(this)}
                         >
                             <option value="12">12 PM</option>
@@ -52,13 +52,13 @@ class AddIntention extends React.Component {
     }
 
     visitTimeChanged(event) {
-        this.setState({ visit_time: parseInt(event.target.value, 10)});
+        this.setState({ visitTime: parseInt(event.target.value, 10)});
     }
 
 
     addIntention(event) {
         event.preventDefault();
-        this.intentionsStore.addIntention(this.props.name, this.state.visit_time);
+        this.intentionsStore.addIntention(this.props.name, this.state.visitTime);
     }
 }
 

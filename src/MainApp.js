@@ -3,7 +3,7 @@ import Runway from "./Runway";
 import {Button, Jumbotron, Nav, Navbar, NavItem} from "react-bootstrap";
 import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 
 class AppMenu extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class AppMenu extends React.Component {
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
                                     </Jumbotron>
                                     <Jumbotron>
-                                        <p>{moment().format('dddd Do MMMM  YYYY')}</p>
+                                        <p>{moment().tz("Europe/London").format('dddd Do MMMM  YYYY')}</p>
                                         <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
                                     </Jumbotron>
                                 </div>

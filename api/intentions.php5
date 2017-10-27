@@ -11,7 +11,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $array = [];
         $result = $conn->query("SELECT * FROM intentions WHERE visit_date = CURRENT_DATE()");
         while ($row = $result->fetch_assoc()) {
-            $array[] = $row;
+            $array[] = array('name' => $row['name'], 'time' => (int)$row['visit_time']);
         }
         print json_encode($array);
         break;
