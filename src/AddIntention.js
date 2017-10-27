@@ -17,7 +17,7 @@ class AddIntention extends React.Component {
     render() {
         return (
         <Jumbotron>
-            <p>Please give an indication of when you intend to go to Epsom Downs today:</p>
+            <p>Give an indication of when you intend to go to Epsom Downs today:</p>
             <form onSubmit={this.addIntention.bind(this)}>
                 <FormGroup controlId="time">
                     <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>

@@ -3,7 +3,6 @@ import './App.css';
 import Login from './Login.js';
 import IntentionsStore from "./IntentionsStore";
 import MainApp from "./MainApp";
-import {PageHeader} from "react-bootstrap";
 
 class App extends React.Component {
     intentionsStore = new IntentionsStore();

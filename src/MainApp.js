@@ -48,8 +48,12 @@ class AppMenu extends React.Component {
                         {top}
                         <div className="container">
                             <h2>Welcome {this.props.name}</h2>
-                            <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
-                            <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                            <div className="row">
+                                <div className="col-md-8">
+                                    <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                    <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                </div>
+                            </div>
                         </div>
                     </span>
                     );

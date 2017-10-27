@@ -14,26 +14,30 @@ class Login extends React.Component {
     render() {
         return (
             <div className="container">
+                <div className="row">
+                    <div className="col-md-3"></div>
+                    <div className="col-md-6">
+                        <Jumbotron>
+                            <form onSubmit={this.login.bind(this)}>
+                                <FormGroup controlId="name">
+                                    <ControlLabel>Name</ControlLabel>
+                                    <div className="input-group">
+                                        <FormControl
+                                            autoFocus="true"
+                                            type="text"
+                                            defaultValue=""
+                                            onChange={this.handleChange.bind(this)}
+                                        />
+                                        <span className="input-group-btn">
+                                            <Button bsStyle="primary" disabled={!this.validateForm()} onClick={this.login.bind(this)}>Login</Button>
+                                        </span>
+                                    </div>
+                                </FormGroup>
 
-                <Jumbotron>
-                    <form onSubmit={this.login.bind(this)}>
-                        <FormGroup controlId="name">
-                            <ControlLabel>Name</ControlLabel>
-                            <div className="input-group">
-                                <FormControl
-                                    autoFocus="true"
-                                    type="text"
-                                    defaultValue=""
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                                <span className="input-group-btn">
-                                    <Button bsStyle="primary" disabled={!this.validateForm()} onClick={this.login.bind(this)}>Login</Button>
-                                </span>
-                            </div>
-                        </FormGroup>
-
-                    </form>
-                </Jumbotron>
+                            </form>
+                        </Jumbotron>
+                    </div>
+                </div>
             </div>
         );
     }
