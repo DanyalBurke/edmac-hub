@@ -38,12 +38,12 @@ class Runway extends React.Component {
             const direction = parseOrThrow(wind.find('direction').attr('value'));
             const directionName = wind.find('direction').attr('name');
 
-            const msg = 'The wind is ' + speed + ' MPH towards ' + directionName + ' at ' + direction + '&deg;.';
+            const msg = 'The wind is ' + speed + ' MPH from ' + directionName + ' at ' + direction + '&deg;.';
 
             jQuery('#weather').html(msg);
 
             const runwayAngle = 22.9;
-            const relativeDirection = direction - runwayAngle;
+            const relativeDirection = direction - runwayAngle + 180;
             const scale = 1;
 
             const runwayCenterX = 170 * scale;
