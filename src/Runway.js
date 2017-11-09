@@ -30,7 +30,7 @@ class Runway extends React.Component {
     componentDidMount() {
 
         // TODO : Switch to https://api.darksky.net/forecast/ee9674fddecc28aa06243b405920c521/51.307862,-0.252657?exclude=minutely,hourly,daily,alerts,flags&units=uk2
-        var url = 'http://api.openweathermap.org/data/2.5/weather?id=7290639&appid=f244df20990dd7f488afbd527b4803ca&mode=xml&units=imperial';
+        var url = 'https://api.openweathermap.org/data/2.5/weather?id=7290639&appid=f244df20990dd7f488afbd527b4803ca&mode=xml&units=imperial';
 
         jQuery.get(url).then(function(data) {
             const wind  = jQuery(data).find('wind');
