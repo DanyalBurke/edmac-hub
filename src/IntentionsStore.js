@@ -27,6 +27,20 @@ class IntentionsStore {
         );
     }
 
+    removeIntention(name) {
+        fetch('/api/intentions.php5', {
+            method: 'DELETE',
+            body: JSON.stringify({name: name})
+        }).then((response) =>
+            response.text()
+        ).then((response) => {
+            console.log(response);
+            this.subscribers.forEach((s) => s());
+        }).catch((err) =>
+            console.log(err)
+        );
+    }
+
     subscribe(f) {
         this.subscribers.push(f);
     }

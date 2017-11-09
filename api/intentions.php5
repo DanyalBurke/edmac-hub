@@ -28,7 +28,16 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'DELETE':
-        print 'OK';
+        $raw_delete = file_get_contents('php://input');
+        $delete = json_decode($raw_delete, true);
+        $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = CURRENT_DATE()");
+        $statement->bind_param("s", $delete['name']);
+        $statement->execute();
+        if ($statement->error) {
+            print $statement->error;
+        } else {
+            print "OK";
+        }
         break;
     default:
         print '405 - unrecognized method';
