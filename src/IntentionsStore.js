@@ -16,7 +16,7 @@ class IntentionsStore {
     addIntention(name, time) {
         fetch('/api/intentions.php5', {
             method: 'POST',
-            body: JSON.stringify({name: name, time: time})
+            body: JSON.stringify({name: name, visitTime: time})
         }).then((response) =>
             response.text()
         ).then((response) => {

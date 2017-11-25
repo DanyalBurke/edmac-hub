@@ -4,3 +4,8 @@
    hosts: all
    tasks:
      - shell: 'ncftpput -R -v -u "youmo3" -p $(cat ftp_password) youmouteki.com public_html/edmachub ../build/*'
+
+ - name: Upload api
+   hosts: all
+   tasks:
+     - shell: 'ncftpput -R -v -u "youmo3" -p $(cat ftp_password) youmouteki.com public_html/edmachub/api ../api/*'

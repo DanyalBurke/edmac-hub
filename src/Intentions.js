@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Table} from "react-bootstrap";
 import 'whatwg-fetch';
+import * as moment from "moment-timezone";
 
 class Intentions extends React.Component {
     constructor(props) {
@@ -26,15 +27,7 @@ class Intentions extends React.Component {
     }
 
     formatVisitTime(time) {
-        if(time < 12) {
-            return time + " AM";
-        }
-        else if (time === 12) {
-            return "12 PM";
-        }
-        else {
-            return time - 12 + " PM";
-        }
+        return moment(time, 'HH:mm').format("h:mm A");
     }
 
     render() {
@@ -47,11 +40,11 @@ class Intentions extends React.Component {
             tableContent = ( <tr key="noitems"> <td colSpan="2" className="tableMessage"> Be the first to go to the downs </td> </tr> )
         } else {
             let sortedItems = this.state.items;
-            sortedItems.sort((a, b) => a.time - b.time);
+            sortedItems.sort((a, b) => a.visitTime - b.visitTime);
             tableContent = this.state.items.sort().map(item=> (
                 <tr key={item.name}>
                     <td> {item.name} </td>
-                    <td> Going at {this.formatVisitTime(item.time)}</td>
+                    <td> Going at {this.formatVisitTime(item.visitTime)}</td>
                 </tr>
             ))
         }

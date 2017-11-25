@@ -11,7 +11,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $array = [];
         $result = $conn->query("SELECT * FROM intentions WHERE visit_date = CURRENT_DATE()");
         while ($row = $result->fetch_assoc()) {
-            $array[] = array('name' => $row['name'], 'time' => (int)$row['visit_time']);
+            $array[] = array('name' => $row['name'], 'visitTime' => $row['visit_time']);
         }
         print json_encode($array);
         break;
@@ -19,7 +19,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $raw_post = file_get_contents('php://input');
         $post = json_decode($raw_post, true);
         $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, CURRENT_DATE()) ON DUPLICATE KEY UPDATE visit_time = ?");
-        $statement->bind_param("sii", $post['name'], $post['time'], $post['time']);
+        $statement->bind_param("ssi", $post['name'], $post['visitTime'], $post['visitTime']);
         $statement->execute();
         if ($statement->error) {
             print $statement->error;

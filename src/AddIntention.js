@@ -11,7 +11,7 @@ class AddIntention extends React.Component {
         this.intentionsStore = props.intentionsStore;
 
         this.state = {
-            visitTime: 12,
+            visitTime: "12:00",
             currentIntention: null
         };
     }
@@ -34,12 +34,20 @@ class AddIntention extends React.Component {
         if(this.state.currentIntention !== null) {
             return (
                 <span>
-                    <p><strong>You are going today at {this.formatVisitTime(this.state.currentIntention.time)}</strong></p>
+                    <p><strong>You are going today at {this.formatVisitTime(this.state.currentIntention.visitTime)}</strong></p>
                     <Button bsStyle="primary" onClick={this.removeIntention.bind(this)}>I'm not going anymore!</Button>
                 </span>
             )
         }
         else {
+
+            let flyingTimes = [];
+            for(let time = moment("12:00", "HH:mm"); time.isBefore(moment("20:00", "HH:mm")); time.add(15, 'minutes')) {
+                flyingTimes.push(moment(time));
+            }
+
+            let options = flyingTimes.map(time => ( <option value={time.format("HH:mm")}>{time.format("h:mm A")}</option> ));
+
             return (
                 <span>
                     <p>Give an indication of when you intend to go to Epsom Downs today:</p>
@@ -53,15 +61,7 @@ class AddIntention extends React.Component {
                                     value={this.state.visitTime}
                                     onChange={this.visitTimeChanged.bind(this)}
                                 >
-                                    <option value="12">12 PM</option>
-                                    <option value="13">1 PM</option>
-                                    <option value="14">2 PM</option>
-                                    <option value="15">3 PM</option>
-                                    <option value="16">4 PM</option>
-                                    <option value="17">5 PM</option>
-                                    <option value="18">6 PM</option>
-                                    <option value="19">7 PM</option>
-
+                                    {options}
                                 </FormControl>
                                 <span className="input-group-btn">
                                     <Button bsStyle="primary" onClick={this.addIntention.bind(this)}>I'm going!</Button>
@@ -76,7 +76,7 @@ class AddIntention extends React.Component {
     }
 
     visitTimeChanged(event) {
-        this.setState({ visitTime: parseInt(event.target.value, 10)});
+        this.setState({ visitTime: event.target.value });
     }
 
 
@@ -91,15 +91,7 @@ class AddIntention extends React.Component {
     }
 
     formatVisitTime(time) {
-        if(time < 12) {
-            return time + " AM";
-        }
-        else if (time === 12) {
-            return "12 PM";
-        }
-        else {
-            return time - 12 + " PM";
-        }
+        return moment(time, 'HH:mm').format("h:mm A");
     }
 }
 
