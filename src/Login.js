@@ -23,6 +23,7 @@ class Login extends React.Component {
                                     <ControlLabel>Name</ControlLabel>
                                     <div className="input-group">
                                         <FormControl
+                                            placeholder="eg. John Smith"
                                             autoFocus="true"
                                             type="text"
                                             defaultValue=""
