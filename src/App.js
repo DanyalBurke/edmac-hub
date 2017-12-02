@@ -21,7 +21,7 @@ class App extends React.Component {
     }
 
     render() {
-        let title = null, body = null;
+        let body = null;
         if (this.isLoggedIn()) {
             body = (
                 <MainApp name={this.state.name} onLogout={this.onLogout.bind(this)} intentionsStore={this.intentionsStore} />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Jumbotron, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import 'whatwg-fetch';
 import * as moment from "moment";
 
@@ -11,9 +11,15 @@ class AddIntention extends React.Component {
         this.intentionsStore = props.intentionsStore;
 
         this.state = {
-            visitTime: "12:00",
+            visitTime: this.suggestedVisitTime(),
             currentIntention: null
         };
+    }
+
+    suggestedVisitTime() {
+        let currentTime = moment().tz("Europe/London");
+        currentTime.minutes(currentTime.minutes() - (currentTime.minutes() % 15))
+        return (currentTime.hour() >= 12 && currentTime.hour() <= 20 ? currentTime.format("HH:mm") : "12:00");
     }
 
     componentDidMount() {
@@ -46,7 +52,7 @@ class AddIntention extends React.Component {
                 flyingTimes.push(moment(time));
             }
 
-            let options = flyingTimes.map(time => ( <option value={time.format("HH:mm")}>{time.format("h:mm A")}</option> ));
+            let options = flyingTimes.map(time => ( <option key={time.format("HH:mm")} value={time.format("HH:mm")}>{time.format("h:mm A")}</option> ));
 
             return (
                 <span>

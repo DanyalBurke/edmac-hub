@@ -37,14 +37,14 @@ class Intentions extends React.Component {
            tableContent = null;
         }
         else if (this.state.items.length === 0) {
-            tableContent = ( <tr key="noitems"> <td colSpan="2" className="tableMessage"> Be the first to go to the downs </td> </tr> )
+            tableContent = ( <tr key="noitems"><td colSpan="2" className="tableMessage"> Be the first to go to the downs </td></tr> )
         } else {
             let sortedItems = this.state.items;
             sortedItems.sort((a, b) => a.visitTime - b.visitTime);
             tableContent = this.state.items.sort().map(item=> (
                 <tr key={item.name}>
-                    <td> {item.name} </td>
-                    <td> Going at {this.formatVisitTime(item.visitTime)}</td>
+                    <td>{item.name}</td>
+                    <td>Going at {this.formatVisitTime(item.visitTime)}</td>
                 </tr>
             ))
         }

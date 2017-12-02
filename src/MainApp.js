@@ -26,7 +26,7 @@ class AppMenu extends React.Component {
 
         let top = (
             <span>
-                <Navbar stacked>
+                <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Button bsStyle="link" onClick={this.props.onLogout}>EDMAC Hub</Button>
