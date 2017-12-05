@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './Runway.css';
+import 'whatwg-fetch';
 
 import * as jQuery from 'jquery';
 import { fabric } from 'fabric';
@@ -32,7 +33,13 @@ class Runway extends React.Component {
         // TODO : Switch to https://api.darksky.net/forecast/ee9674fddecc28aa06243b405920c521/51.307862,-0.252657?exclude=minutely,hourly,daily,alerts,flags&units=uk2
         var url = 'https://api.openweathermap.org/data/2.5/weather?id=7290639&appid=f244df20990dd7f488afbd527b4803ca&mode=xml&units=imperial';
 
-        jQuery.get(url).then(function(data) {
+        fetch(url, {
+            method: 'get'
+        }).then(response =>
+            response.text()
+        ).then(str =>
+            (new window.DOMParser()).parseFromString(str, "text/xml")
+        ).then((data) => {
             const wind  = jQuery(data).find('wind');
             const speed = parseOrThrow(wind.find('speed').attr('value'));
             const direction = parseOrThrow(wind.find('direction').attr('value'));
@@ -131,7 +138,7 @@ class Runway extends React.Component {
             });
 
 
-        }).fail(function(error) { console.log('Error ' + JSON.stringify(error)); });
+        }).catch(err => console.log(err));
     }
 }
 

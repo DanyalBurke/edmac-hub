@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $array = [];
-        $result = $conn->query("SELECT * FROM intentions WHERE visit_date = CURRENT_DATE()");
+        $result = $conn->query("SELECT * FROM intentions WHERE visit_date = DATE(UTC_TIMESTAMP)");
         while ($row = $result->fetch_assoc()) {
             $array[] = array('name' => $row['name'], 'visitTime' => $row['visit_time']);
         }
@@ -18,7 +18,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $raw_post = file_get_contents('php://input');
         $post = json_decode($raw_post, true);
-        $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, CURRENT_DATE()) ON DUPLICATE KEY UPDATE visit_time = ?");
+        $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, DATE(UTC_TIMESTAMP)) ON DUPLICATE KEY UPDATE visit_time = ?");
         $statement->bind_param("ssi", $post['name'], $post['visitTime'], $post['visitTime']);
         $statement->execute();
         if ($statement->error) {
@@ -30,7 +30,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         $raw_delete = file_get_contents('php://input');
         $delete = json_decode($raw_delete, true);
-        $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = CURRENT_DATE()");
+        $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = DATE(UTC_TIMESTAMP)");
         $statement->bind_param("s", $delete['name']);
         $statement->execute();
         if ($statement->error) {
@@ -40,9 +40,9 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         break;
     default:
+        http_response_code(405);
         print '405 - unrecognized method';
         break;
-
 }
 
 ?>

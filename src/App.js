@@ -4,9 +4,11 @@ import Login from './Login.js';
 import IntentionsStore from "./IntentionsStore";
 import MainApp from "./MainApp";
 import Cookie from 'js-cookie'
+import MessagesStore from "./MessagesStore";
 
 class App extends React.Component {
     intentionsStore = new IntentionsStore();
+    messagesStore = new MessagesStore();
 
     constructor(props) {
         super(props)
@@ -24,7 +26,7 @@ class App extends React.Component {
         let body = null;
         if (this.isLoggedIn()) {
             body = (
-                <MainApp name={this.state.name} onLogout={this.onLogout.bind(this)} intentionsStore={this.intentionsStore} />
+                <MainApp name={this.state.name} onLogout={this.onLogout.bind(this)} intentionsStore={this.intentionsStore} messagesStore={this.messagesStore} />
             );
 
         } else {

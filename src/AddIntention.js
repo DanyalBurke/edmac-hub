@@ -9,22 +9,26 @@ class AddIntention extends React.Component {
         super(props);
 
         this.intentionsStore = props.intentionsStore;
+        this.messagesStore = props.messagesStore;
 
         this.state = {
             visitTime: this.suggestedVisitTime(),
+            message: "",
             currentIntention: null
         };
     }
 
     suggestedVisitTime() {
         let currentTime = moment().tz("Europe/London");
-        currentTime.minutes(currentTime.minutes() - (currentTime.minutes() % 15))
+        currentTime.minutes(currentTime.minutes() - (currentTime.minutes() % 15));
         return (currentTime.hour() >= 12 && currentTime.hour() <= 20 ? currentTime.format("HH:mm") : "12:00");
     }
 
     componentDidMount() {
         this.load();
         this.intentionsStore.subscribe(() => this.load());
+        this.loadMessage();
+        this.messagesStore.subscribe(() => this.loadMessage());
     }
 
     load() {
@@ -33,15 +37,44 @@ class AddIntention extends React.Component {
             this.setState({
                 currentIntention: currentIntention
             });
-        })
+        });
+    }
+
+    loadMessage() {
+        this.messagesStore.getMessages().then((json) => {
+            let currentMessage = json.find((row) => row.name === this.props.name) || null;
+            this.setState({
+                message: currentMessage == null ? "" : currentMessage.message
+            })
+        });
     }
 
     render() {
         if(this.state.currentIntention !== null) {
             return (
                 <span>
-                    <p><strong>You are going today at {this.formatVisitTime(this.state.currentIntention.visitTime)}</strong></p>
-                    <Button bsStyle="primary" onClick={this.removeIntention.bind(this)}>I'm not going anymore!</Button>
+                    <div className="row" style={{'marginBottom': '2em'}}>
+                        <p className="text-center"><strong>You are going today at {this.formatVisitTime(this.state.currentIntention.visitTime)}</strong></p>
+                        <Button className="center-block" bsStyle="primary" onClick={this.removeIntention.bind(this)}>I'm not going anymore!</Button>
+                    </div>
+
+                    <FormGroup controlId="formControlsSelect">
+                        <ControlLabel>Leave a short message for others to see</ControlLabel>
+                        <div className="input-group">
+                            <FormControl
+                                autoFocus="true"
+                                componentClass="input"
+                                placeholder="... Gone home now! ..."
+                                onChange={this.messageChanged.bind(this)}
+                                value={this.state.message}
+                                maxLength="100"
+                            />
+                            <span className="input-group-btn">
+                                <Button bsStyle="primary" onClick={this.addMessage.bind(this)}>Update message</Button>
+                            </span>
+                        </div>
+                    </FormGroup>
+
                 </span>
             )
         }
@@ -56,14 +89,14 @@ class AddIntention extends React.Component {
 
             return (
                 <span>
-                    <p>Give an indication of when you intend to go to Epsom Downs today:</p>
+                    <p>Welcome, {this.props.name}: Give an indication of when you intend to go to Epsom Downs today:</p>
                     <form onSubmit={this.addIntention.bind(this)}>
                         <FormGroup controlId="time">
                             <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>
                             <div className="input-group">
                                 <FormControl
                                     autoFocus="true"
-                                    componentClass="select" placeholder="12PM"
+                                    componentClass="select"
                                     value={this.state.visitTime}
                                     onChange={this.visitTimeChanged.bind(this)}
                                 >
@@ -81,10 +114,19 @@ class AddIntention extends React.Component {
         }
     }
 
+    messageChanged(event) {
+        this.setState({ message: event.target.value });
+    }
+
     visitTimeChanged(event) {
         this.setState({ visitTime: event.target.value });
     }
 
+
+    addMessage(event) {
+        event.preventDefault();
+        this.messagesStore.addMessage(this.props.name, this.state.message);
+    }
 
     addIntention(event) {
         event.preventDefault();

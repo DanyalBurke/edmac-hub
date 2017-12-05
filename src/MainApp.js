@@ -51,15 +51,14 @@ class AppMenu extends React.Component {
                     <span>
                         {top}
                         <div className="container">
-
                             <div className="row">
                                 <div className="col-md-8">
                                     <Jumbotron>
-                                        <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                        <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                     <Jumbotron>
-                                        <p>{moment().tz("Europe/London").format('dddd Do MMMM  YYYY')}</p>
-                                        <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore}/>
+                                        <p>Going today, {moment().tz("Europe/London").format('dddd Do MMMM  YYYY')}</p>
+                                        <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                 </div>
                             </div>
