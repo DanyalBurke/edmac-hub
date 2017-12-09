@@ -56,7 +56,6 @@ class AppMenu extends React.Component {
                             <div className="row">
                                 <div className="col-md-8">
                                     <Jumbotron>
-                                        <h2>edmachub.com is currently being migrated to a more reliable hosting provider. Please bear with us while we restore site functionality - Thanks!</h2>
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                     <Jumbotron>

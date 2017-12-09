@@ -3,9 +3,9 @@
  - name: Upload site
    hosts: all
    tasks:
-     - shell: 'ncftpput -R -v -u "youmo3" -p $(cat ftp_password) youmouteki.com public_html/edmachub ../build/*'
+     - shell: 'ncftpput -R -v -u "danroot@edmachub.com" -p $(cat ftp_password) edmachub.com public_html ../build/*'
 
  - name: Upload api
    hosts: all
    tasks:
-     - shell: 'ncftpput -R -v -u "youmo3" -p $(cat ftp_password) youmouteki.com public_html/edmachub/api ../api/*'
+     - shell: 'ncftpput -R -v -u "danroot@edmachub.com" -p $(cat ftp_password) edmachub.com public_html/api ../api/*'
