@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import 'whatwg-fetch';
+import 'fetch-retry';
 import * as moment from "moment";
 
 class AddIntention extends React.Component {
@@ -33,19 +33,23 @@ class AddIntention extends React.Component {
 
     load() {
         this.intentionsStore.getIntentions().then((json) => {
-            let currentIntention = json.find((row) => row.name === this.props.name) || null;
-            this.setState({
-                currentIntention: currentIntention
-            });
+            if(json) {
+                let currentIntention = json.find((row) => row.name === this.props.name) || null;
+                this.setState({
+                    currentIntention: currentIntention
+                });
+            }
         });
     }
 
     loadMessage() {
         this.messagesStore.getMessages().then((json) => {
-            let currentMessage = json.find((row) => row.name === this.props.name) || null;
-            this.setState({
-                message: currentMessage == null ? "" : currentMessage.message
-            })
+            if(json) {
+                let currentMessage = json.find((row) => row.name === this.props.name) || null;
+                this.setState({
+                    message: currentMessage == null ? "" : currentMessage.message
+                });
+            }
         });
     }
 

@@ -1,13 +1,5 @@
 <?php
-ini_set("log_errors", 1);
-ini_set("error_log", "/home/youmo3/phplogs/log");
-
-$conn = new mysqli("localhost", "youmo3_edmachub", "eve4NxcUaE]N", "youmo3_edmachub");
-$conn->query("SET time_zone = 'Europe/London'");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':

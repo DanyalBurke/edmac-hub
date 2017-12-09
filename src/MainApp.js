@@ -37,10 +37,12 @@ class AppMenu extends React.Component {
                         <Nav activeKey={this.state.selected} onSelect={this.handleSelect.bind(this)}>
                             <NavItem eventKey={'intentions'}> Who's going? </NavItem>
                             <NavItem eventKey={'weather'}> Weather </NavItem>
+                            {/*<NavItem eventKey={'feedback'}> Feedback </NavItem>*/}
                             <NavItem onClick={this.props.onLogout}>Logout</NavItem>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
+
             </span>
 
         );
@@ -54,6 +56,7 @@ class AppMenu extends React.Component {
                             <div className="row">
                                 <div className="col-md-8">
                                     <Jumbotron>
+                                        <h2>edmachub.com is currently being migrated to a more reliable hosting provider. Please bear with us while we restore site functionality - Thanks!</h2>
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                     <Jumbotron>
@@ -73,6 +76,14 @@ class AppMenu extends React.Component {
                             <Runway />
                         </div>
                     </span>);
+            // case 'feedback':
+            //     return (
+            //         <span>
+            //             {top}
+            //             <div className="container">
+            //                 <Feedback />
+            //             </div>
+            //         </span>);
             default:
                 return (
                     <span>

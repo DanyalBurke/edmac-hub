@@ -1,23 +1,14 @@
 <?php
-ini_set("log_errors", 1);
-ini_set("error_log", "/home/youmo3/phplogs/log");
-
-$conn = new mysqli("localhost", "youmo3_edmachub", "eve4NxcUaE]N", "youmo3_edmachub");
-$conn->query("SET time_zone = 'Europe/London'");
-
-//if (rand(1,2) ==1) {
-//    http_response_code(500);
-//    die("Randomly die");
-//}
-if ($conn->connect_error) {
-    error_log("Database failure: " . $conn->connect_error);
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $array = [];
         $result = $conn->query("SELECT * FROM intentions WHERE visit_date = DATE(UTC_TIMESTAMP)");
+        if ($conn->error) {
+            error_log( "GET failure: " . $conn->error);
+            die($conn->error);
+        }
         while ($row = $result->fetch_assoc()) {
             $array[] = array('name' => $row['name'], 'visitTime' => $row['visit_time']);
         }
@@ -32,7 +23,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $statement->execute();
         if ($statement->error) {
             error_log("POST failure: " . $statement->error);
-            print $statement->error;
+            die($statement->error);
         } else {
             print "OK";
         }
@@ -45,7 +36,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         $statement->execute();
         if ($statement->error) {
             error_log("DELETE failure: " . $statement->error);
-            print $statement->error;
+            die($statement->error);
         } else {
             print "OK";
         }
@@ -56,6 +47,6 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-error_log("intentions.php5 Used memory: " . memory_get_usage());
+error_log("intentions.php Used memory: " . memory_get_usage(true));
 
 ?>

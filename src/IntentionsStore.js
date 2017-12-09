@@ -1,10 +1,11 @@
-import 'whatwg-fetch';
+import fetchRetry from './FetchRetry';
+
 
 class IntentionsStore {
     subscribers = [];
 
     getIntentions() {
-        return fetch('/api/intentions.php5', {
+        return fetchRetry('/api/intentions.php', {
             method: 'get'
         }).then((response) =>
             response.json()
@@ -14,7 +15,7 @@ class IntentionsStore {
     }
 
     addIntention(name, time) {
-        fetch('/api/intentions.php5', {
+        fetchRetry('/api/intentions.php', {
             method: 'POST',
             body: JSON.stringify({name: name, visitTime: time})
         }).then((response) =>
@@ -28,7 +29,7 @@ class IntentionsStore {
     }
 
     removeIntention(name) {
-        fetch('/api/intentions.php5', {
+        fetchRetry('/api/intentions.php', {
             method: 'DELETE',
             body: JSON.stringify({name: name})
         }).then((response) =>

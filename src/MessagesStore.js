@@ -1,10 +1,10 @@
-import 'whatwg-fetch';
+import fetchRetry from './FetchRetry';
 
 class MessagesStore {
     subscribers = [];
 
     getMessages() {
-        return fetch('/api/messages.php5', {
+        return fetchRetry('/api/messages.php', {
             method: 'get'
         }).then((response) =>
             response.json()
@@ -14,7 +14,7 @@ class MessagesStore {
     }
 
     addMessage(name, message) {
-        fetch('/api/messages.php5', {
+        fetchRetry('/api/messages.php', {
             method: 'POST',
             body: JSON.stringify({name: name, message: message})
         }).then((response) =>

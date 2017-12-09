@@ -1,22 +1,14 @@
-import 'whatwg-fetch';
+import fetchRetry from './FetchRetry';
 
-class MessagesStore {
-    subscribers = [];
-
-    getMessages() {
-        return fetch('/api/messages.php5', {
-            method: 'get'
-        }).then((response) =>
-            response.json()
-        ).catch((err) =>
-            console.log(err)
-        );
+class FeedbackStore {
+    sendError(name, message) {
+        this.addMessage(name, "error_log", message);
     }
 
-    addMessage(name, message) {
-        fetch('/api/messages.php5', {
+    sendFeedback(name, email, message) {
+        fetchRetry('/api/feedback.php', {
             method: 'POST',
-            body: JSON.stringify({name: name, message: message})
+            body: JSON.stringify({name: name, email: email, message: message})
         }).then((response) =>
             response.text()
         ).then((response) => {
@@ -26,10 +18,6 @@ class MessagesStore {
             console.log(err)
         );
     }
-
-    subscribe(f) {
-        this.subscribers.push(f);
-    }
 }
 
-export default MessagesStore
+export default FeedbackStore

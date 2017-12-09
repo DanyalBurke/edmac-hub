@@ -25,14 +25,18 @@ class Intentions extends React.Component {
 
     load() {
         this.intentionsStore.getIntentions().then((json) => {
-            console.log("Items: " + JSON.stringify(json));
-            this.setState({items: json})
+            if(json) {
+                console.log("Items: " + JSON.stringify(json));
+                this.setState({items: json});
+            }
         })
     }
 
     loadMessage() {
         this.messagesStore.getMessages().then((json) => {
-            this.setState({messages: json });
+            if(json) {
+                this.setState({messages: json});
+            }
         });
     }
 
