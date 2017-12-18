@@ -3,8 +3,7 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-        $raw_post = file_get_contents('php://input');
-        $post = json_decode($raw_post, true);
+        $post = inputAsJson();
         $statement = $conn->prepare("INSERT INTO feedback (name, feedback_date, email, message) VALUES (?, UTC_TIMESTAMP, ?, ?)");
         $statement->bind_param("sss", $post['name'], $post['email'], $post['message']);
         $statement->execute();

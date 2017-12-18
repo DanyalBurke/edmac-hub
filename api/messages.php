@@ -3,23 +3,17 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $array = [];
         $result = $conn->query("SELECT * FROM messages WHERE visit_date = DATE(UTC_TIMESTAMP)");
         if ($conn->error) {
             error_log("GET failure: " . $conn->error);
             die($conn->error);
         }
-        else {
-            while ($row = $result->fetch_assoc()) {
-                $array[] = array('name' => $row['name'], 'message' => $row['message']);
-            }
-            print json_encode($array);
-        }
+        print json_encode(rows($result, function($row) {
+            return array('name' => $row['name'], 'message' => $row['message']);
+        }));
         break;
     case 'POST':
-        $raw_post = file_get_contents('php://input');
-        error_log($raw_post);
-        $post = json_decode($raw_post, true);
+        $post = inputAsJson();
         $statement = $conn->prepare("INSERT INTO messages (name, visit_date, message) VALUES (?, DATE(UTC_TIMESTAMP), ?) ON DUPLICATE KEY UPDATE message = ?");
         $statement->bind_param("sss", $post['name'], $post['message'], $post['message']);
         $statement->execute();

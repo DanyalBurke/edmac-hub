@@ -3,21 +3,17 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $array = [];
         $result = $conn->query("SELECT * FROM intentions WHERE visit_date = DATE(UTC_TIMESTAMP)");
         if ($conn->error) {
             error_log( "GET failure: " . $conn->error);
             die($conn->error);
         }
-        while ($row = $result->fetch_assoc()) {
-            $array[] = array('name' => $row['name'], 'visitTime' => $row['visit_time']);
-        }
-        print json_encode($array);
+        print json_encode(rows($result, function($row) {
+            return array('name' => $row['name'], 'visitTime' => $row['visit_time']);
+        }));
         break;
     case 'POST':
-        $raw_post = file_get_contents('php://input');
-        error_log($raw_post);
-        $post = json_decode($raw_post, true);
+        $post = inputAsJson();
         $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, DATE(UTC_TIMESTAMP)) ON DUPLICATE KEY UPDATE visit_time = ?");
         $statement->bind_param("sss", $post['name'], $post['visitTime'], $post['visitTime']);
         $statement->execute();
@@ -29,8 +25,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'DELETE':
-        $raw_delete = file_get_contents('php://input');
-        $delete = json_decode($raw_delete, true);
+        $delete = inputAsJson();
         $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = DATE(UTC_TIMESTAMP)");
         $statement->bind_param("s", $delete['name']);
         $statement->execute();
