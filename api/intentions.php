@@ -19,7 +19,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         error_log($raw_post);
         $post = json_decode($raw_post, true);
         $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, DATE(UTC_TIMESTAMP)) ON DUPLICATE KEY UPDATE visit_time = ?");
-        $statement->bind_param("ssi", $post['name'], $post['visitTime'], $post['visitTime']);
+        $statement->bind_param("sss", $post['name'], $post['visitTime'], $post['visitTime']);
         $statement->execute();
         if ($statement->error) {
             error_log("POST failure: " . $statement->error);

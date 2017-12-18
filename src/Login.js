@@ -53,7 +53,14 @@ class Login extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({name: event.target.value.trim()});
+        this.setState({name: this.namealize(event.target.value.trim())});
+    }
+
+    namealize(name) {
+        return name.replace(/[^A-Za-z ]+/g, '')
+                   .split(/\s+/)
+                   .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+                   .join(" ");
     }
 }
 
