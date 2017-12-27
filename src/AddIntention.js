@@ -32,7 +32,7 @@ class AddIntention extends React.Component {
     }
 
     load() {
-        this.intentionsStore.getIntentions().then((json) => {
+        this.intentionsStore.getIntentions(this.props.name).then((json) => {
             if(json) {
                 let currentIntention = json.find((row) => row.name === this.props.name) || null;
                 this.setState({
@@ -54,6 +54,7 @@ class AddIntention extends React.Component {
     }
 
     render() {
+
         if(this.state.currentIntention !== null) {
             return (
                 <span>

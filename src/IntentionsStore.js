@@ -4,14 +4,17 @@ import fetchRetry from './FetchRetry';
 class IntentionsStore {
     subscribers = [];
 
-    getIntentions() {
+    getIntentions(name) {
         return fetchRetry('/api/intentions.php', {
             method: 'get'
         }).then((response) =>
             response.json()
-        ).catch((err) =>
-            console.log(err)
-        );
+        ).catch((err) => {
+            console.log(err);
+            if(name === "Debug") {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 
     addIntention(name, time) {
@@ -23,9 +26,12 @@ class IntentionsStore {
         ).then((response) => {
             console.log(response);
             this.subscribers.forEach((s) => s());
-        }).catch((err) =>
-            console.log(err)
-        );
+        }).catch((err) => {
+            console.log(err);
+            if(name === "Debug") {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 
     removeIntention(name) {
@@ -37,9 +43,12 @@ class IntentionsStore {
         ).then((response) => {
             console.log(response);
             this.subscribers.forEach((s) => s());
-        }).catch((err) =>
-            console.log(err)
-        );
+        }).catch((err) => {
+            console.log(err);
+            if(name === "Debug") {
+                alert(JSON.stringify(err));
+            }
+        });
     }
 
     subscribe(f) {

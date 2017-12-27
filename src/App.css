@@ -5,3 +5,5 @@
 .tableMessage {
   text-align: center;
 }
+
+.version { color: #AAA; font-size: 0.9em; float: right }

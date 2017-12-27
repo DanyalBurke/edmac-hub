@@ -36,10 +36,13 @@ class Login extends React.Component {
                                 </FormGroup>
 
                             </form>
+                            <span className="version">v1.1.3</span>
                         </Jumbotron>
                     </div>
                 </div>
+
             </div>
+
         );
     }
 
