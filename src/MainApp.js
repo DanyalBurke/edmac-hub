@@ -75,14 +75,6 @@ class AppMenu extends React.Component {
                             <Runway />
                         </div>
                     </span>);
-            // case 'feedback':
-            //     return (
-            //         <span>
-            //             {top}
-            //             <div className="container">
-            //                 <Feedback />
-            //             </div>
-            //         </span>);
             default:
                 return (
                     <span>

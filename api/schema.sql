@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS intentions;
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS feedback;
+DROP TABLE IF EXISTS visitors;
 
 CREATE TABLE intentions (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -16,10 +20,10 @@ CREATE TABLE messages (
   UNIQUE KEY (`name`, `visit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE feedback (
-  id      INT PRIMARY KEY AUTO_INCREMENT,
-  name    VARCHAR(255) NOT NULL,
-  feedback_date DATETIME NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  message text NOT NULL
+CREATE TABLE visitors (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  visit_time TIME NOT NULL,
+  visit_date DATE NOT NULL,
+  KEY (`visit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

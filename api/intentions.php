@@ -42,6 +42,4 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-error_log("intentions.php Used memory: " . memory_get_usage(true));
-
 ?>
