@@ -4,10 +4,13 @@ import {Button, Jumbotron, Nav, Navbar, NavItem} from "react-bootstrap";
 import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
 import * as moment from "moment-timezone";
+import Visitors from "./Visitors";
 
 class AppMenu extends React.Component {
     constructor(props) {
         super(props);
+
+        this.visitorsStore = this.props.visitorsStore;
 
         this.state = {
             'selected': 'intentions'
@@ -18,6 +21,10 @@ class AppMenu extends React.Component {
         this.setState({
             'selected': selectedKey
         });
+    }
+
+    componentDidMount() {
+        this.visitorsStore.addVisitor(this.props.name);
     }
 
 
@@ -37,7 +44,7 @@ class AppMenu extends React.Component {
                         <Nav activeKey={this.state.selected} onSelect={this.handleSelect.bind(this)}>
                             <NavItem eventKey={'intentions'}> Who's going? </NavItem>
                             <NavItem eventKey={'weather'}> Weather </NavItem>
-                            {/*<NavItem eventKey={'feedback'}> Feedback </NavItem>*/}
+                            <NavItem eventKey={'visitors'}> Visitors </NavItem>
                             <NavItem onClick={this.props.onLogout}>Logout</NavItem>
                         </Nav>
                     </Navbar.Collapse>
@@ -75,6 +82,17 @@ class AppMenu extends React.Component {
                             <Runway />
                         </div>
                     </span>);
+            case 'visitors':
+                return (
+                    <span>
+                        {top}
+                        <div className="container">
+                            <Jumbotron>
+                            <Visitors visitorsStore={this.props.visitorsStore} />
+                            </Jumbotron>
+                        </div>
+                    </span>
+                )
             default:
                 return (
                     <span>

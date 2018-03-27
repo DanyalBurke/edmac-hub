@@ -3,7 +3,7 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $result = $conn->query("SELECT name, MAX(visit_time) visit_time FROM visitors WHERE visit_date = DATE(UTC_TIMESTAMP) GROUP BY name");
+        $result = $conn->query("SELECT name, event_date FROM events WHERE event_date > DATE_ADD(DATE(UTC_TIMESTAMP), INTERVAL 7 DAY) AND event_date < DATE(UTC_TIMESTAMP)");
         if ($conn->error) {
             error_log("GET failure: " . $conn->error);
             die($conn->error);
