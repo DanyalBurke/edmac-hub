@@ -1,5 +1,5 @@
 <?php
-$home = preg_replace('#/home/([^/]+)/.*#', "/home/$1", __FILE__);
+$home = preg_replace('#/(home|Users)/([^/]+)/.*#', "/$1/$2", __FILE__);
 
 ini_set("log_errors", 1);
 ini_set("error_log", $home . "/phplogs/log");

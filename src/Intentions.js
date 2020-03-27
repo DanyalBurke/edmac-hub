@@ -55,7 +55,7 @@ class Intentions extends React.Component {
             tableContent = ( <tr key="noitems"><td colSpan="3" className="tableMessage"> ... Loading ... </td></tr> )
         }
         else if (this.state.items.length === 0) {
-            tableContent = ( <tr key="noitems"><td colSpan="3" className="tableMessage"> Be the first to go to the downs </td></tr> )
+            tableContent = ( <tr key="noitems"><td colSpan="3" className="tableMessage"> No one is going today. Stay at home! </td></tr> )
         } else {
             let sortedItems = this.state.items;
             sortedItems.sort((a, b) => moment(a.visitTime, 'HH:mm').valueOf() - moment(b.visitTime, 'HH:mm').valueOf());

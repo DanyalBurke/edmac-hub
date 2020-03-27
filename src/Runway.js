@@ -62,7 +62,7 @@ class Runway extends React.Component {
             const arrowEndY = runwayCenterY + Math.sin(toRadians(relativeDirection - 90)) * length;
             console.log('Arrow end X = ' + arrowEndX + ' Arrow End Y = ' + arrowEndY);
 
-            var canvas = new fabric.Canvas('runway');
+            var canvas = new fabric.StaticCanvas('runway');
 
             var line = new fabric.Line([arrowEndX, arrowEndY, runwayCenterX, runwayCenterY], {
                 stroke: '#300',
