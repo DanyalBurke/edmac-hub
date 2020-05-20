@@ -23,3 +23,6 @@ yarn-error.log*
 ftp_password
 
 *.swp
+
+# node
+package-lock.json

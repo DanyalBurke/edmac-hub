@@ -94,13 +94,8 @@ class AddIntention extends React.Component {
 
             return (
                 <span>
-                    <p>Welcome, there is no flying currently.</p>
-                    <hr>
-                    <p>Due to Covid-19, the government restrictions on our movements now make it impossible to fly safely and responsibly on the Downs.</p>
-                    <p>Consequently, the Committee declare that all flying is suspended with immediate effect until further notice.</p>
-                    <p>As government restrictions are lifted in the future, the suspension will be reviewed and lifted in due course.</p>
-                    <!--<p>Welcome, {this.props.name}: Give an indication of when you intend to go to Epsom Downs today:</p>-->
-                    <form hidden onSubmit={this.addIntention.bind(this)}>
+                    <p>Welcome, {this.props.name}: Give an indication of when you intend to go to Epsom Downs today:</p>
+                    <form onSubmit={this.addIntention.bind(this)}>
                         <FormGroup controlId="time">
                             <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>
                             <div className="input-group">
