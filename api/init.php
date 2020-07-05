@@ -3,7 +3,8 @@ $home = preg_replace('#/(home|Users)/([^/]+)/.*#', "/$1/$2", __FILE__);
 
 ini_set("log_errors", 1);
 ini_set("error_log", $home . "/phplogs/log");
-
+ini_set('display_errors', 1);
+error_reporting(E_ALL ^ E_NOTICE);
 list($mysql_database, $mysql_username, $mysql_password) = explode(":", file_get_contents($home . "/mysql_credentials"), 3);
 
 $conn = new mysqli("localhost", trim($mysql_username),  trim($mysql_password), trim($mysql_database));

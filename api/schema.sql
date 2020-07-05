@@ -28,9 +28,10 @@ CREATE TABLE visitors (
   INDEX (`visit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE events (
+CREATE TABLE IF NOT EXISTS events (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   event_date DATE NOT NULL,
+  detail VARCHAR(255) NOT NULL DEFAULT "",
   INDEX (`event_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

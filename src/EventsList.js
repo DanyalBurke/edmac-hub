@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {Table} from "react-bootstrap";
+import {Jumbotron, Table} from "react-bootstrap";
 import 'whatwg-fetch';
 import * as moment from "moment-timezone";
 
-class Visitors extends React.Component {
+class EventsList extends React.Component {
     constructor(props) {
         super(props);
 
-        this.visitorsStore = props.visitorsStore;
+        this.eventsStore = props.eventsStore;
 
         this.state = {
             items: null,
@@ -19,7 +19,7 @@ class Visitors extends React.Component {
     }
 
     load() {
-        this.visitorsStore.getVisitors().then((json) => {
+        this.eventsStore.getEvents().then((json) => {
             if(json) {
                 console.log("Items: " + JSON.stringify(json));
                 this.setState({items: json});
@@ -27,44 +27,30 @@ class Visitors extends React.Component {
         })
     }
 
-    formatVisitTime(time) {
-        return moment(time, 'HH:mm').format("h:mm A");
-    }
-
     render() {
-        let tableContent = null
         if (this.state.items === null) {
-            tableContent = ( <tr key="noitems"><td colSpan="2" className="tableMessage"> ... Loading ... </td></tr> )
+            return ( <span></span> )
         }
         else if (this.state.items.length === 0) {
-            tableContent = ( <tr key="noitems"><td colSpan="2" className="tableMessage"> No visitors except yourself yet! </td></tr> )
+            return ( <span></span> )
         } else {
             let sortedItems = this.state.items;
-            sortedItems.sort((a, b) => moment(a.visitTime, 'HH:mm').valueOf() - moment(b.visitTime, 'HH:mm').valueOf());
-            tableContent = this.state.items.sort().map(item=> (
-                <tr key={item.name}>
-                    <td>{item.name}</td>
-                    <td>{this.formatVisitTime(item.visitTime)}</td>
-                </tr>
+            sortedItems.sort((a, b) => moment(a.eventDate, 'DD/MM/YYYY').valueOf() - moment(b.eventDate, 'DD/MM/YYYY').valueOf());
+            let content = this.state.items.sort().map(item=> (
+
+                <li key={item.name}>
+                    {this.formatEventDate(item.eventDate)}: {item.name} - <strong>{item.detail}</strong>
+                </li>
             ))
+            return ( <Jumbotron><strong>Upcoming events:</strong> {content} </Jumbotron> );
         }
 
-        return (
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Time</th>
-                </tr>
-                </thead>
-                <tbody>
 
-                {tableContent}
+    }
 
-                </tbody>
-            </Table>
-        );
+    formatEventDate(eventDate) {
+        return moment(eventDate, 'DD/MM/YYYY').format('ddd Do')
     }
 }
 
-export default Visitors;
+export default EventsList;

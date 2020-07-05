@@ -1,8 +1,8 @@
 import fetchRetry from './FetchRetry';
 
-class VisitorsStore {
-    getVisitors() {
-        return fetchRetry('/api/visitors.php', {
+class EventsStore {
+    getEvents() {
+        return fetchRetry('/api/events.php?days=7', {
             method: 'get'
         }).then((response) =>
             response.json()
@@ -10,19 +10,6 @@ class VisitorsStore {
             console.log(err)
         );
     }
-
-    addVisitor(name) {
-        fetchRetry('/api/visitors.php', {
-            method: 'POST',
-            body: JSON.stringify({name: name})
-        }).then((response) =>
-            response.text()
-        ).then((response) => {
-            console.log(response);
-        }).catch((err) =>
-            console.log(err)
-        );
-    }
 }
 
-export default VisitorsStore
+export default EventsStore

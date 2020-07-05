@@ -5,6 +5,7 @@ import AddIntention from "./AddIntention";
 import Intentions from "./Intentions";
 import * as moment from "moment-timezone";
 import Visitors from "./Visitors";
+import EventsList from "./EventsList";
 
 class AppMenu extends React.Component {
     constructor(props) {
@@ -62,6 +63,7 @@ class AppMenu extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
+                                    <EventsList eventsStore={this.props.eventsStore} />
                                     <Jumbotron>
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>

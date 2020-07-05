@@ -6,6 +6,9 @@ include 'init.php';
 $schema = file_get_contents("schema.sql");
 
 foreach(explode(';', $schema) as $command) {
+    if(preg_match("#^\s*$#", $command )) {
+        continue;
+    }
     $result = $conn->query($command);
     if (!$result) {
         echo $conn->error;
