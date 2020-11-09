@@ -8,7 +8,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 list($mysql_database, $mysql_username, $mysql_password) = explode(":", file_get_contents($home . "/mysql_credentials"), 3);
 
 $conn = new mysqli("localhost", trim($mysql_username),  trim($mysql_password), trim($mysql_database));
-$conn->query("SET time_zone = 'Europe/London'");
+$conn->query("SET time_zone = '+01:00'");
 
 if ($conn->connect_error) {
     error_log("Database failure: " . $conn->connect_error);

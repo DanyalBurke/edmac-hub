@@ -10,9 +10,9 @@ function toRadians (angle) {
     return angle * (Math.PI / 180);
 }
 
-function parseOrThrow(value) {
+function parseOrNull(value) {
     if (isUndefined(value)) {
-        throw Error('API returned invalid response');
+        return null
     } else {
         return parseInt(value, 10);
     }
@@ -39,17 +39,18 @@ class Runway extends React.Component {
         ).then(str =>
             (new window.DOMParser()).parseFromString(str, "text/xml")
         ).then((data) => {
+            const runwayAngle = 22.9;
+
             const wind  = jQuery(data).find('wind');
-            const speed = parseOrThrow(wind.find('speed').attr('value'));
-            const direction = parseOrThrow(wind.find('direction').attr('value'));
-            const directionName = wind.find('direction').attr('name');
+            const speed = parseOrNull(wind.find('speed').attr('value')) || -1;
+            const direction = parseOrNull(wind.find('direction').attr('value')) || 0;
+            const directionName = wind.find('direction').attr('name') || "Unknown";
 
             const msg = 'The wind is ' + speed + ' MPH from ' + directionName + ' at ' + direction + '&deg;.';
 
             jQuery('#weather').html(msg);
 
-            const runwayAngle = 22.9;
-            const relativeDirection = direction - runwayAngle + 180;
+            const relativeDirection = (direction || 0) - runwayAngle + 180;
             const scale = 1;
 
             const runwayCenterX = 170 * scale;
