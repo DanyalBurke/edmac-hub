@@ -63,17 +63,9 @@ class AppMenu extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <EventsList eventsStore={this.props.eventsStore} />
                                     <Jumbotron>
-                                        <p><strong>Flying at Epsom Downs is suspended until further notice</strong></p>
-                                        <!--<p>For the time being, use this spreadsheet to book time slots (up to 6 at a time): <a href="https://docs.google.com/spreadsheets/d/1fsRaTBDhP3uzrEADCVLJJ82dkWKIoQfbreZAhRhhUj0/edit#gid=0">Time slot spreadsheet</a></p>-->
-                                    </Jumbotron>
-                                    <Jumbotron>
-                                        <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
-                                    </Jumbotron>
-                                    <Jumbotron>
-                                        <p>Going today, {moment().tz("Europe/London").format('dddd Do MMMM  YYYY')}</p>
-                                        <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
+                                        <p><strong>Important Update:</strong></p>
+                                        <p>No flying currently due to national lockdown.</p>
                                     </Jumbotron>
                                 </div>
                             </div>
