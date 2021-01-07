@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Jumbotron, Table} from "react-bootstrap";
+import {Jumbotron} from "react-bootstrap";
 import 'whatwg-fetch';
 import * as moment from "moment-timezone";
 

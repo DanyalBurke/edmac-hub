@@ -5,14 +5,14 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
-    "fabric": "^3.6.3",
+    "fabric": "^3.6.6",
     "fetch-retry": "^2.2.3",
     "jquery": "^3.5.1",
     "js-cookie": "^2.1.4",
     "moment-timezone": "^0.5.31",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-bootstrap": "^0.31.2",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.14.0",
     "react-scripts": "3.1.2",
     "whatwg-fetch": "^2.0.3"
   },

@@ -14,7 +14,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $post = inputAsJson();
-        $statement = $conn->prepare("INSERT INTO visitors (name, visit_time, visit_date) VALUES (?, CURRENT_TIME(), DATE(UTC_TIMESTAMP))");
+        $statement = $conn->prepare("INSERT INTO visitors (name, visit_time, visit_date) VALUES (?, UTC_TIMESTAMP, DATE(UTC_TIMESTAMP))");
         $statement->bind_param("s", $post['name']);
         $statement->execute();
         if ($statement->error) {
