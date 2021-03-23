@@ -65,8 +65,7 @@ class AppMenu extends React.Component {
                                 <div className="col-md-8">
                                     <EventsList eventsStore={this.props.eventsStore} />
                                     <Jumbotron>
-                                        <p><strong>Flying at Epsom Downs is suspended until further notice</strong></p>
-                                        <!--<p>For the time being, use this spreadsheet to book time slots (up to 6 at a time): <a href="https://docs.google.com/spreadsheets/d/1fsRaTBDhP3uzrEADCVLJJ82dkWKIoQfbreZAhRhhUj0/edit#gid=0">Time slot spreadsheet</a></p>-->
+                                        <p>For the time being, use this spreadsheet to book time slots (up to 6 at a time): <a href="https://docs.google.com/spreadsheets/d/1fsRaTBDhP3uzrEADCVLJJ82dkWKIoQfbreZAhRhhUj0/edit#gid=0">Time slot spreadsheet</a></p>
                                     </Jumbotron>
                                     <Jumbotron>
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
