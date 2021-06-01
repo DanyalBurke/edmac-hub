@@ -3,7 +3,7 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $result = $conn->query("SELECT * FROM intentions WHERE visit_date = DATE(UTC_TIMESTAMP)");
+        $result = $conn->query("SELECT * FROM intentions WHERE visit_date = '$local_date'");
         if ($conn->error) {
             error_log( "GET failure: " . $conn->error);
             die($conn->error);
@@ -14,7 +14,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $post = inputAsJson();
-        $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, DATE(UTC_TIMESTAMP)) ON DUPLICATE KEY UPDATE visit_time = ?");
+        $statement = $conn->prepare("INSERT INTO intentions (name, visit_time, visit_date) VALUES (?, ?, '$local_date') ON DUPLICATE KEY UPDATE visit_time = ?");
         $statement->bind_param("sss", $post['name'], $post['visitTime'], $post['visitTime']);
         $statement->execute();
         if ($statement->error) {
@@ -26,7 +26,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'DELETE':
         $delete = inputAsJson();
-        $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = DATE(UTC_TIMESTAMP)");
+        $statement = $conn->prepare("DELETE FROM intentions WHERE name = ? AND visit_date = '$local_date'");
         $statement->bind_param("s", $delete['name']);
         $statement->execute();
         if ($statement->error) {

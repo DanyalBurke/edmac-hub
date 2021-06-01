@@ -10,6 +10,10 @@ list($mysql_database, $mysql_username, $mysql_password) = explode(":", file_get_
 $conn = new mysqli("localhost", trim($mysql_username),  trim($mysql_password), trim($mysql_database));
 $conn->query("SET time_zone = '+01:00'");
 
+$local_now = new DateTime('now', new DateTimeZone("Europe/London"));
+$local_time = $local_now->format("H:i:s");
+$local_date = $local_now->format("Y-m-d");
+
 if ($conn->connect_error) {
     error_log("Database failure: " . $conn->connect_error);
     die("Connection failed: " . $conn->connect_error);

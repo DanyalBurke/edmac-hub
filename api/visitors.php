@@ -3,7 +3,7 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $result = $conn->query("SELECT name, MAX(visit_time) visit_time FROM visitors WHERE visit_date = DATE(UTC_TIMESTAMP) GROUP BY name");
+        $result = $conn->query("SELECT name, MAX(visit_time) visit_time FROM visitors WHERE visit_date = '$local_date' GROUP BY name");
         if ($conn->error) {
             error_log("GET failure: " . $conn->error);
             die($conn->error);
@@ -14,7 +14,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $post = inputAsJson();
-        $statement = $conn->prepare("INSERT INTO visitors (name, visit_time, visit_date) VALUES (?, UTC_TIMESTAMP, DATE(UTC_TIMESTAMP))");
+        $statement = $conn->prepare("INSERT INTO visitors (name, visit_time, visit_date) VALUES (?, '$local_time', '$local_date')");
         $statement->bind_param("s", $post['name']);
         $statement->execute();
         if ($statement->error) {

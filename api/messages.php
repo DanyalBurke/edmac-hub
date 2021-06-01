@@ -3,7 +3,7 @@ include 'init.php';
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $result = $conn->query("SELECT * FROM messages WHERE visit_date = DATE(UTC_TIMESTAMP)");
+        $result = $conn->query("SELECT * FROM messages WHERE visit_date = '$local_date'");
         if ($conn->error) {
             error_log("GET failure: " . $conn->error);
             die($conn->error);
@@ -14,7 +14,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $post = inputAsJson();
-        $statement = $conn->prepare("INSERT INTO messages (name, visit_date, message) VALUES (?, DATE(UTC_TIMESTAMP), ?) ON DUPLICATE KEY UPDATE message = ?");
+        $statement = $conn->prepare("INSERT INTO messages (name, visit_date, message) VALUES (?, '$local_date', ?) ON DUPLICATE KEY UPDATE message = ?");
         $statement->bind_param("sss", $post['name'], $post['message'], $post['message']);
         $statement->execute();
         if ($statement->error) {

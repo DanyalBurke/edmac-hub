@@ -5,7 +5,7 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $query = "SELECT name, DATE_FORMAT(event_date, '%d/%m/%Y') as event_date, detail FROM events";
         if (isset($_GET['days']) and is_numeric($_GET['days'])) {
-            $query .= " WHERE DATE(UTC_TIMESTAMP) >= DATE_ADD(event_date, INTERVAL -${_GET['days']} DAY) AND DATE(UTC_TIMESTAMP) <= event_date";
+            $query .= " WHERE '$local_date' >= DATE_ADD(event_date, INTERVAL -${_GET['days']} DAY) AND '$local_date' <= event_date";
         }
         $result = $conn->query($query);
 
