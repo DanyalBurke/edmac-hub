@@ -4,23 +4,20 @@ import fetchRetry from './FetchRetry';
 class IntentionsStore {
     subscribers = [];
 
-    getIntentions(name) {
+    getIntentions() {
         return fetchRetry('/api/intentions.php', {
             method: 'get'
         }).then((response) =>
             response.json()
         ).catch((err) => {
             console.log(err);
-            if(name === "Debug") {
-                alert(JSON.stringify(err));
-            }
         });
     }
 
-    addIntention(name, time) {
+    addIntention(name, time, date, parkingSpace) {
         fetchRetry('/api/intentions.php', {
             method: 'POST',
-            body: JSON.stringify({name: name, visitTime: time})
+            body: JSON.stringify({name: name, visitTime: time, visitDate: date, parkingSpace: parkingSpace})
         }).then((response) =>
             response.text()
         ).then((response) => {
@@ -34,10 +31,10 @@ class IntentionsStore {
         });
     }
 
-    removeIntention(name) {
+    removeIntention(name, visitDate) {
         fetchRetry('/api/intentions.php', {
             method: 'DELETE',
-            body: JSON.stringify({name: name})
+            body: JSON.stringify({name: name, visitDate: visitDate})
         }).then((response) =>
             response.text()
         ).then((response) => {

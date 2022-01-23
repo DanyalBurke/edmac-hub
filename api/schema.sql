@@ -8,7 +8,7 @@ CREATE TABLE intentions (
   name VARCHAR(255) NOT NULL,
   visit_time TIME NOT NULL,
   visit_date DATE NOT NULL,
-
+  parking_space BOOL NOT NULL,
   UNIQUE KEY (`name`, `visit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

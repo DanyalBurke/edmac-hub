@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL ^ E_NOTICE);
 list($mysql_database, $mysql_username, $mysql_password) = explode(":", file_get_contents($home . "/mysql_credentials"), 3);
 
-$conn = new mysqli("localhost", trim($mysql_username),  trim($mysql_password), trim($mysql_database));
+$conn = new mysqli("127.0.0.1", trim($mysql_username),  trim($mysql_password), trim($mysql_database));
 $conn->query("SET time_zone = '+01:00'");
 
 $local_now = new DateTime('now', new DateTimeZone("Europe/London"));
@@ -21,7 +21,7 @@ if ($conn->connect_error) {
 
 function inputAsJson() {
     $raw_input = file_get_contents('php://input');
-    error_log("input: " + $raw_input);
+    error_log("input: " . $raw_input);
     return json_decode($raw_input, true);
 }
 

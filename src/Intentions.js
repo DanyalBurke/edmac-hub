@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Table} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import 'whatwg-fetch';
 import * as moment from "moment-timezone";
 
@@ -8,19 +8,15 @@ class Intentions extends React.Component {
         super(props);
 
         this.intentionsStore = props.intentionsStore;
-        this.messagesStore = props.messagesStore;
 
         this.state = {
-            items: null,
-            messages: null
+            items: null
         };
     }
 
     componentDidMount() {
         this.load();
         this.intentionsStore.subscribe(() => this.load());
-        this.loadMessage();
-        this.messagesStore.subscribe(() => this.loadMessage());
     }
 
     load() {
@@ -32,49 +28,69 @@ class Intentions extends React.Component {
         })
     }
 
-    loadMessage() {
-        this.messagesStore.getMessages().then((json) => {
-            if(json) {
-                this.setState({messages: json});
-            }
-        });
-    }
-
     formatVisitTime(time) {
         return moment(time, 'HH:mm').format("h:mm A");
     }
 
-    render() {
-        var messageMap = (this.state.messages || []).reduce(function(map, json) {
-            map[json.name] = json.message;
-            return map;
-        }, {});
+    formatParking(time, parkingSpace) {
+        let parkingTimeLimit = moment(time, 'HH:mm').add(2, 'hours').format("h:mm A")
+        if(parkingSpace) {
+            return "✓ (Until " + parkingTimeLimit + ")";
+        }
+        else {
+            return "";
+        }
+    }
 
+    formatDay(date) {
+        let formatted =  moment(date, "YYYY-MM-DD").format("dddd Do MMMM")
+        if(date === moment().format("YYYY-MM-DD")) {
+            return "Today - " + formatted;
+        }
+        else if (date === moment().add(1 , 'day').format("YYYY-MM-DD")) {
+            return "Tomorrow - " + formatted;
+        }
+        else {
+            return formatted;
+        }
+    }
+
+    visitDays() {
+        // Unique set of days
+        return this.state.items === null ? [] :
+            this.state.items.map(item => item.visitDate).filter((value, index, self) => self.indexOf(value) === index).sort()
+    }
+
+    render() {
         let tableContent = null
         if (this.state.items === null) {
-            tableContent = ( <tr key="noitems"><td colSpan="3" className="tableMessage"> ... Loading ... </td></tr> )
+            tableContent = ( <tr key="noitems"><td colSpan="4" className="tableMessage"> ... Loading ... </td></tr> )
         }
         else if (this.state.items.length === 0) {
-            tableContent = ( <tr key="noitems"><td colSpan="3" className="tableMessage"> Be the first to go to the downs </td></tr> )
+            tableContent = ( <tr key="noitems"><td colSpan="4" className="tableMessage"> Be the first to go to the downs </td></tr> )
         } else {
-            let sortedItems = this.state.items;
-            sortedItems.sort((a, b) => moment(a.visitTime, 'HH:mm').valueOf() - moment(b.visitTime, 'HH:mm').valueOf());
-            tableContent = this.state.items.sort().map(item=> (
-                <tr key={item.name}>
-                    <td>{item.name}</td>
-                    <td>{this.formatVisitTime(item.visitTime)}</td>
-                    <td>{messageMap[item.name]}</td>
-                </tr>
+            tableContent = this.visitDays().map(day => (
+                <React.Fragment>
+                    <tr style={{"background-color": "#96bfff"}}>
+                        <td colSpan="4" style={{"font-size": "10pt"}}>
+                            <strong>{this.formatDay(day)}</strong>
+                        </td>
+                    </tr>
+                    {
+                        this.renderItems(this.state.items.filter(item => item.visitDate === day))
+                    }
+                </React.Fragment>
             ))
         }
 
         return (
             <Table striped bordered hover>
-                <thead>
+                <thead style={{"font-weight": "bolder", "background-color": "#BBB", color: "#333", "font-size": "12pt"}}>
                 <tr>
                     <th>Name</th>
                     <th>Time</th>
-                    <th>Message</th>
+                    <th>EDMAC Parking</th>
+                    <th>&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -84,6 +100,24 @@ class Intentions extends React.Component {
                 </tbody>
             </Table>
         );
+    }
+
+    renderItems(items) {
+        return items
+            .sort((a, b) => moment(a.visitTime, 'HH:mm').valueOf() - moment(b.visitTime, 'HH:mm').valueOf())
+            .map(item=> (
+            <tr key={item.name + item.visitDate}>
+                <td>{item.name}</td>
+                <td>{this.formatVisitTime(item.visitTime)}</td>
+                <td>{this.formatParking(item.visitTime, item.parkingSpace)}</td>
+                <td style={{width: '1%', "min-width": "5em"}}>{item.name === this.props.name ? (
+                    <Button bsStyle="primary" className="btn-sm" style={{padding: "2px 10px"}} onClick={this.cancel.bind(this, item)}>Cancel</Button>) : ""}</td>
+            </tr>
+        ))
+    }
+
+    cancel(item) {
+        this.intentionsStore.removeIntention(item.name, item.visitDate);
     }
 }
 

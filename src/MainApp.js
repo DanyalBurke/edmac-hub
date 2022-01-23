@@ -65,13 +65,10 @@ class AppMenu extends React.Component {
                                 <div className="col-md-8">
                                     <EventsList eventsStore={this.props.eventsStore} />
                                     <Jumbotron>
-                                        <p>May 17th Update: Use the following link to reserve a parking space: <a href="https://docs.google.com/spreadsheets/d/1fsRaTBDhP3uzrEADCVLJJ82dkWKIoQfbreZAhRhhUj0/edit#gid=0">Time slot spreadsheet</a></p>
-                                    </Jumbotron>
-                                    <Jumbotron>
                                         <AddIntention name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                     <Jumbotron>
-                                        <p>Going today, {moment().tz("Europe/London").format('dddd Do MMMM  YYYY')}</p>
+                                        <p>Going in the next 7 days</p>
                                         <Intentions name={this.props.name} intentionsStore={this.props.intentionsStore} messagesStore={this.props.messagesStore} />
                                     </Jumbotron>
                                 </div>

@@ -8,139 +8,192 @@ class AddIntention extends React.Component {
     constructor(props) {
         super(props);
 
+        let now = moment().tz("Europe/London")
+        this.now = function() { return moment(now); }
+
         this.intentionsStore = props.intentionsStore;
-        this.messagesStore = props.messagesStore;
 
         this.state = {
             visitTime: this.suggestedVisitTime(),
-            message: "",
-            currentIntention: null
+            visitDate: this.suggestedVisitDate(),
+            parkingSpace: false,
+            intentions: null
         };
     }
 
     suggestedVisitTime() {
-        let currentTime = moment().tz("Europe/London");
+        let currentTime = this.now();
         currentTime.minutes(currentTime.minutes() - (currentTime.minutes() % 15));
-        return (currentTime.hour() >= 12 && currentTime.hour() <= 20 ? currentTime.format("HH:mm") : "12:00");
+        return (currentTime.hour() >= 12 && currentTime.hour() < 20 ? currentTime.format("HH:mm") : "12:00");
+    }
+
+    suggestedVisitDate() {
+        return this.now().format("YYYY-MM-DD")
     }
 
     componentDidMount() {
         this.load();
         this.intentionsStore.subscribe(() => this.load());
-        this.loadMessage();
-        this.messagesStore.subscribe(() => this.loadMessage());
     }
 
     load() {
-        this.intentionsStore.getIntentions(this.props.name).then((json) => {
+        this.intentionsStore.getIntentions().then((json) => {
             if(json) {
-                let currentIntention = json.find((row) => row.name === this.props.name) || null;
+                let intentions = json.filter((row) => row.name === this.props.name);
                 this.setState({
-                    currentIntention: currentIntention
+                    intentions: intentions
                 });
             }
         });
     }
 
-    loadMessage() {
-        this.messagesStore.getMessages().then((json) => {
-            if(json) {
-                let currentMessage = json.find((row) => row.name === this.props.name) || null;
-                this.setState({
-                    message: currentMessage == null ? "" : currentMessage.message
-                });
+    renderDate(date, short) {
+        let formatted = date.format("dddd Do MMMM")
+        if(date.format("YYYY-MM-DD") === this.now().format("YYYY-MM-DD")) {
+            if (short) {
+                return "Today"
+            } else {
+                return "Today - " + formatted;
             }
-        });
+        }
+        else if (date.format("YYYY-MM-DD") === this.now().add(1 , 'day').format("YYYY-MM-DD")) {
+            if (short) {
+                return "Tomorrow"
+            } else {
+                return "Tomorrow - " + formatted;
+            }
+        }
+        else {
+            if (short) {
+                return date.format("dddd")
+            } else {
+                return formatted;
+            }
+        }
+    }
+
+    flyingDates() {
+        let flyingDates = []
+        let date = this.now()
+        for (let i = 0 ; i < 7 ; i++) {
+            flyingDates.push(moment(date));
+            date.add(1, 'day')
+        }
+        return flyingDates
+    }
+
+    flyingTimes() {
+        let flyingTimes = [];
+        for (let time = moment("12:00", "HH:mm"); time.isBefore(moment("20:00", "HH:mm")); time.add(15, 'minutes')) {
+            flyingTimes.push(moment(time));
+        }
+        return flyingTimes
+    }
+
+    intentionForSelectedDate() {
+        return this.state.intentions?.find(intention => intention.visitDate === this.state.visitDate)
     }
 
     render() {
+        let dateOptions = this.flyingDates().map(date => (<option key={date.format("YYYY-MM-DD")}
+                                                           value={date.format("YYYY-MM-DD")}>{this.renderDate(date)}</option>));
 
-        if(this.state.currentIntention !== null) {
-            return (
-                <span>
-                    <div className="row" style={{'marginBottom': '2em'}}>
-                        <p className="text-center"><strong>You are going today at {this.formatVisitTime(this.state.currentIntention.visitTime)}</strong></p>
-                        <Button className="center-block" bsStyle="primary" onClick={this.removeIntention.bind(this)}>I'm not going anymore!</Button>
-                    </div>
+        return (
+            <span>
+                <p>Welcome, {this.props.name}: Choose a time to go to Epsom Downs</p>
 
-                    <FormGroup controlId="formControlsSelect">
-                        <ControlLabel>Leave a short message for others to see</ControlLabel>
-                        <div className="input-group">
-                            <FormControl
-                                autoFocus="true"
-                                componentClass="input"
-                                placeholder="... Gone home now! ..."
-                                onChange={this.messageChanged.bind(this)}
-                                value={this.state.message}
-                                maxLength="100"
-                            />
-                            <span className="input-group-btn">
-                                <Button bsStyle="primary" onClick={this.addMessage.bind(this)}>Update message</Button>
-                            </span>
-                        </div>
-                    </FormGroup>
+                <FormGroup controlId="date">
+                    <ControlLabel>Day:</ControlLabel>
+                    <FormControl
+                        autoFocus="true"
+                        componentClass="select"
+                        value={this.state.visitDate}
+                        onChange={this.visitDateChanged.bind(this)}
+                    >
+                        {dateOptions}
+                    </FormControl>
+                </FormGroup>
 
-                </span>
-            )
-        }
-        else {
-
-            let flyingTimes = [];
-            for(let time = moment("12:00", "HH:mm"); time.isBefore(moment("20:00", "HH:mm")); time.add(15, 'minutes')) {
-                flyingTimes.push(moment(time));
-            }
-
-            let options = flyingTimes.map(time => ( <option key={time.format("HH:mm")} value={time.format("HH:mm")}>{time.format("h:mm A")}</option> ));
-
-            return (
-                <span>
-                    <p>Welcome, {this.props.name}: Give an indication of when you intend to go to Epsom Downs today:</p>
-                    <form onSubmit={this.addIntention.bind(this)}>
-                        <FormGroup controlId="time">
-                            <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>
-                            <div className="input-group">
-                                <FormControl
-                                    autoFocus="true"
-                                    componentClass="select"
-                                    value={this.state.visitTime}
-                                    onChange={this.visitTimeChanged.bind(this)}
-                                >
-                                    {options}
-                                </FormControl>
-                                <span className="input-group-btn">
-                                    <Button bsStyle="primary" onClick={this.addIntention.bind(this)}>I'm going!</Button>
-                                </span>
-                            </div>
-                        </FormGroup>
-
-                    </form>
-                </span>
-            );
-        }
+                {
+                    this.intentionForSelectedDate() == null ? this.renderChooseTimeForm() : this.renderIntentionForm()
+                }
+            </span>
+        );
     }
 
-    messageChanged(event) {
-        this.setState({ message: event.target.value });
+    renderIntentionForm() {
+        let intentionForSelectedDate = this.intentionForSelectedDate()
+        return <div>
+                <p className="text-center">
+                    <strong>{this.renderDate(moment(intentionForSelectedDate.visitDate, "YYYY-MM-DD"), true)}: You are going at {this.formatVisitTime(intentionForSelectedDate.visitTime)}</strong>
+                    {intentionForSelectedDate.parkingSpace === true ?
+                        <strong><br />EDMAC Parking space is reserved until {this.formatVisitTime(moment(intentionForSelectedDate.visitTime, "HH:mm").add(2, 'hours'))}!</strong> : ""}
+                </p>
+                <div className="text-center">
+                    <span className="input-group-btn">
+                        <Button bsStyle="primary" onClick={this.cancel.bind(this)}>Cancel</Button>
+                    </span>
+                </div>
+        </div>
+    }
+
+    renderChooseTimeForm() {
+        let timeOptions = this.flyingTimes().map(time => (
+            <option key={time.format("HH:mm")} value={time.format("HH:mm")}>{time.format("h:mm A")}</option>));
+
+        return (
+            <span>
+                <FormGroup controlId="date">
+                    <ControlLabel>Parking:</ControlLabel>
+                    <FormControl
+                        componentClass="select"
+                        value={this.state.parkingSpace}
+                        onChange={this.edmacParkingSpaceChanged.bind(this)}
+                    >
+                        <option key="false" value="false">I'll use the Public Car Park</option>
+                        <option key="true" value="true">Book EDMAC Parking Space</option>
+                    </FormControl>
+                </FormGroup>
+                <FormGroup controlId="time">
+                    <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>
+                    <div className="input-group">
+                        <FormControl
+                            componentClass="select"
+                            value={this.state.visitTime}
+                            onChange={this.visitTimeChanged.bind(this)}
+                        >
+                            {timeOptions}
+                        </FormControl>
+
+                        <span className="input-group-btn">
+                            <Button bsStyle="primary" onClick={this.addIntention.bind(this)}>I'm going!</Button>
+                        </span>
+                    </div>
+                </FormGroup>
+            </span>
+        )
     }
 
     visitTimeChanged(event) {
         this.setState({ visitTime: event.target.value });
     }
 
+    visitDateChanged(event) {
+        this.setState({ visitDate: event.target.value })
+    }
 
-    addMessage(event) {
-        event.preventDefault();
-        this.messagesStore.addMessage(this.props.name, this.state.message);
+    edmacParkingSpaceChanged(event) {
+        this.setState( { parkingSpace: event.target.value === "true" })
     }
 
     addIntention(event) {
         event.preventDefault();
-        this.intentionsStore.addIntention(this.props.name, this.state.visitTime);
+        this.intentionsStore.addIntention(this.props.name, this.state.visitTime, this.state.visitDate, this.state.parkingSpace);
     }
 
-    removeIntention(event) {
+    cancel(event) {
         event.preventDefault();
-        this.intentionsStore.removeIntention(this.props.name);
+        this.intentionsStore.removeIntention(this.props.name, this.state.visitDate)
     }
 
     formatVisitTime(time) {
