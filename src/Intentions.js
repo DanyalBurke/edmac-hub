@@ -16,7 +16,12 @@ class Intentions extends React.Component {
 
     componentDidMount() {
         this.load();
-        this.intentionsStore.subscribe(() => this.load());
+        this.subscription = this.load.bind(this);
+        this.intentionsStore.subscribe(this.subscription);
+    }
+
+    componentWillUnmount() {
+        this.intentionsStore.unsubscribe(this.subscription)
     }
 
     load() {
@@ -70,9 +75,9 @@ class Intentions extends React.Component {
             tableContent = ( <tr key="noitems"><td colSpan="4" className="tableMessage"> Be the first to go to the downs </td></tr> )
         } else {
             tableContent = this.visitDays().map(day => (
-                <React.Fragment>
-                    <tr style={{"background-color": "#96bfff"}}>
-                        <td colSpan="4" style={{"font-size": "10pt"}}>
+                <React.Fragment key={day}>
+                    <tr key={day} style={{"backgroundColor": "#96bfff"}}>
+                        <td colSpan="4" style={{"fontSize": "10pt"}}>
                             <strong>{this.formatDay(day)}</strong>
                         </td>
                     </tr>
@@ -85,7 +90,7 @@ class Intentions extends React.Component {
 
         return (
             <Table striped bordered hover>
-                <thead style={{"font-weight": "bolder", "background-color": "#BBB", color: "#333", "font-size": "12pt"}}>
+                <thead style={{"fontWeight": "bolder", "backgroundColor": "#BBB", color: "#333", "fontSize": "12pt"}}>
                 <tr>
                     <th>Name</th>
                     <th>Time</th>
@@ -110,7 +115,7 @@ class Intentions extends React.Component {
                 <td>{item.name}</td>
                 <td>{this.formatVisitTime(item.visitTime)}</td>
                 <td>{this.formatParking(item.visitTime, item.parkingSpace)}</td>
-                <td style={{width: '1%', "min-width": "5em"}}>{item.name === this.props.name ? (
+                <td style={{width: '1%', "minWidth": "5em"}}>{item.name === this.props.name ? (
                     <Button bsStyle="primary" className="btn-sm" style={{padding: "2px 10px"}} onClick={this.cancel.bind(this, item)}>Cancel</Button>) : ""}</td>
             </tr>
         ))

@@ -9,7 +9,7 @@ class MessagesStore {
         }).then((response) =>
             response.json()
         ).catch((err) =>
-            console.log(err)
+            console.log(err.message)
         );
     }
 
@@ -23,12 +23,16 @@ class MessagesStore {
             console.log(response);
             this.subscribers.forEach((s) => s());
         }).catch((err) =>
-            console.log(err)
+            console.log(err.message)
         );
     }
 
     subscribe(f) {
         this.subscribers.push(f);
+    }
+
+    unsubscribe(f) {
+        this.subscribers = this.subscribers.filter(item => item !== f)
     }
 }
 

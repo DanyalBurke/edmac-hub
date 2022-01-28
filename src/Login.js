@@ -24,7 +24,7 @@ class Login extends React.Component {
                                     <div className="input-group">
                                         <FormControl
                                             placeholder="eg. John Smith"
-                                            autoFocus="true"
+                                            autoFocus
                                             type="text"
                                             defaultValue=""
                                             onChange={this.handleChange.bind(this)}

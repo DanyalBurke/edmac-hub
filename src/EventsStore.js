@@ -7,7 +7,7 @@ class EventsStore {
         }).then((response) =>
             response.json()
         ).catch((err) =>
-            console.log(err)
+            console.log(err.message)
         );
     }
 }

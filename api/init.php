@@ -33,4 +33,11 @@ function rows($result, $row_transformer) {
     return $array;
 }
 
+function die_on_error($context, $message) {
+    if ($context->error) {
+        error_log("$message failure: " . $context->error);
+        die($context->error);
+    }
+}
+
 ?>

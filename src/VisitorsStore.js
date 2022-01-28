@@ -7,7 +7,7 @@ class VisitorsStore {
         }).then((response) =>
             response.json()
         ).catch((err) =>
-            console.log(err)
+            console.log(err.message)
         );
     }
 
@@ -20,7 +20,7 @@ class VisitorsStore {
         ).then((response) => {
             console.log(response);
         }).catch((err) =>
-            console.log(err)
+            console.log(err.message)
         );
     }
 }

@@ -17,7 +17,8 @@ class AddIntention extends React.Component {
             visitTime: this.suggestedVisitTime(),
             visitDate: this.suggestedVisitDate(),
             parkingSpace: false,
-            intentions: null
+            intentions: null,
+            addIntentionError: null
         };
     }
 
@@ -33,7 +34,12 @@ class AddIntention extends React.Component {
 
     componentDidMount() {
         this.load();
-        this.intentionsStore.subscribe(() => this.load());
+        this.subscription = this.load.bind(this)
+        this.intentionsStore.subscribe(this.subscription);
+    }
+
+    componentWillUnmount() {
+        this.intentionsStore.unsubscribe(this.subscription)
     }
 
     load() {
@@ -105,7 +111,6 @@ class AddIntention extends React.Component {
                 <FormGroup controlId="date">
                     <ControlLabel>Day:</ControlLabel>
                     <FormControl
-                        autoFocus="true"
                         componentClass="select"
                         value={this.state.visitDate}
                         onChange={this.visitDateChanged.bind(this)}
@@ -170,25 +175,38 @@ class AddIntention extends React.Component {
                         </span>
                     </div>
                 </FormGroup>
+                <p>
+                    { this.state.addIntentionError ? <strong style={{color: '#400'}}>{this.state.addIntentionError}</strong> : "" }
+                </p>
             </span>
         )
     }
 
     visitTimeChanged(event) {
-        this.setState({ visitTime: event.target.value });
+        this.setState({ visitTime: event.target.value, addIntentionError: null })
     }
 
     visitDateChanged(event) {
-        this.setState({ visitDate: event.target.value })
+        this.setState({ visitDate: event.target.value, addIntentionError: null })
     }
 
     edmacParkingSpaceChanged(event) {
-        this.setState( { parkingSpace: event.target.value === "true" })
+        this.setState( { parkingSpace: event.target.value === "true", addIntentionError: null })
     }
 
     addIntention(event) {
         event.preventDefault();
-        this.intentionsStore.addIntention(this.props.name, this.state.visitTime, this.state.visitDate, this.state.parkingSpace);
+        this.intentionsStore.addIntention(this.props.name, this.state.visitTime, this.state.visitDate, this.state.parkingSpace).then((response) => {
+            this.setState({
+                addIntentionError: null
+            });
+        }).catch((err) => {
+            if(err.status === 409) {
+                this.setState({
+                    addIntentionError: 'Maximum 4 parking slots have already been booked. Please try another time!'
+                });
+            }
+        })
     }
 
     cancel(event) {

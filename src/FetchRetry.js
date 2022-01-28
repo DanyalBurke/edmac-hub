@@ -1,5 +1,13 @@
 import 'whatwg-fetch';
 
+class HttpResonseCodeError extends Error {
+    constructor(status, message) {
+        super(message);
+        this.message = message;
+        this.status = status;
+    }
+}
+
 function fetchRetry(url, options) {
     var retries = 0;
     var retryDelay = 500;
@@ -20,7 +28,7 @@ function fetchRetry(url, options) {
                     if (statusStr.indexOf('2') === 0 || statusStr === '404') {
                         return response;
                     }
-                    throw new Error(response.status + ": " + response.statusText);
+                    throw new HttpResonseCodeError(response.status, response.status + ": " + response.statusText);
                 })
                 .then(function (response) {
                     resolve(response);

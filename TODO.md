@@ -5,3 +5,4 @@ Feature wishlist
 Tech debt:
 * Runway - no JQuery
 * Events admin security
+* Add Tornado warning
