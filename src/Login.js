@@ -19,11 +19,11 @@ class Login extends React.Component {
                     <div className="col-md-6">
                         <Jumbotron>
                             <form onSubmit={this.login.bind(this)}>
-                                <FormGroup controlId="name">
-                                    <ControlLabel>Name</ControlLabel>
+                                <FormGroup controlId="bmfanumber">
+                                    <ControlLabel>BMFA Number</ControlLabel>
                                     <div className="input-group">
                                         <FormControl
-                                            placeholder="eg. John Smith"
+                                            placeholder="BMFA12345"
                                             autoFocus
                                             type="text"
                                             defaultValue=""
@@ -56,7 +56,7 @@ class Login extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({name: this.namealize(event.target.value.trim())});
+        this.setState({bmfaNumber: this.namealize(event.target.value.trim())});
     }
 
     namealize(name) {

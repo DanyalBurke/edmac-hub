@@ -94,7 +94,6 @@ class Intentions extends React.Component {
                 <tr>
                     <th>Name</th>
                     <th>Time</th>
-                    <th>EDMAC Parking</th>
                     <th>&nbsp;</th>
                 </tr>
                 </thead>
@@ -114,7 +113,6 @@ class Intentions extends React.Component {
             <tr key={item.name + item.visitDate}>
                 <td>{item.name}</td>
                 <td>{this.formatVisitTime(item.visitTime)}</td>
-                <td>{this.formatParking(item.visitTime, item.parkingSpace)}</td>
                 <td style={{width: '1%', "minWidth": "5em"}}>{item.name === this.props.name ? (
                     <Button bsStyle="primary" className="btn-sm" style={{padding: "2px 10px"}} onClick={this.cancel.bind(this, item)}>Cancel</Button>) : ""}</td>
             </tr>

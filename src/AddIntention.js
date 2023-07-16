@@ -148,17 +148,6 @@ class AddIntention extends React.Component {
 
         return (
             <span>
-                <FormGroup controlId="date">
-                    <ControlLabel>Parking:</ControlLabel>
-                    <FormControl
-                        componentClass="select"
-                        value={this.state.parkingSpace}
-                        onChange={this.edmacParkingSpaceChanged.bind(this)}
-                    >
-                        <option key="false" value="false">I'll use the Public Car Park</option>
-                        <option key="true" value="true">Book EDMAC Parking Space</option>
-                    </FormControl>
-                </FormGroup>
                 <FormGroup controlId="time">
                     <ControlLabel>I intend to go to Epsom Downs at:</ControlLabel>
                     <div className="input-group">

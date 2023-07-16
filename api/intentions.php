@@ -18,7 +18,8 @@ function validate_parking_space_booking($conn, $post) {
         $parking_space_statement->bind_param("ssss", $post['visitDate'], $time_slot, $time_slot, $post['name']);
         $parking_space_statement->execute();
         die_on_error($parking_space_statement, "validate parking space intentions");
-        $size = $parking_space_statement->get_result()->fetch_assoc()['parking_slots'];
+        $parking_space_statement->bind_result($size);
+        $parking_space_statement->fetch();
         if ($size >= 4) {
             return false;
         }
